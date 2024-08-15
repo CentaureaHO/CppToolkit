@@ -1,2 +1,4 @@
 cmake/*
+.vscode/*
+
 !cmake/CMakeLists.txt

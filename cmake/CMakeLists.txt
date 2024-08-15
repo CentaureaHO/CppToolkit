@@ -9,5 +9,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/../AnyType ${CMAKE_BINARY_DIR}/Proj/AnyType)
-add_subdirectory(${CMAKE_SOURCE_DIR}/../ThreadPool ${CMAKE_BINARY_DIR}/Proj/ThreadPool)
+add_subdirectory(${CMAKE_SOURCE_DIR}/../Common/AnyType ${CMAKE_BINARY_DIR}/Proj/AnyType)
+add_subdirectory(${CMAKE_SOURCE_DIR}/../Parallel/ThreadPool ${CMAKE_BINARY_DIR}/Proj/ThreadPool)
