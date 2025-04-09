@@ -25,8 +25,5 @@ int main()
 
     tp.Sync();
 
-    for (auto& f : futures)
-    {
-        std::cout << f.get() << " ";
-    }
+    for (auto& f : futures) std::cout << f.get() << " ";
 }
