@@ -1,4 +1,2 @@
-cmake/*
 .vscode/*
-
-!cmake/CMakeLists.txt
+**/build
