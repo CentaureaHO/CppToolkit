@@ -6,10 +6,13 @@
 using namespace std;
 using namespace Cele::Algo;
 
-DomAnalyzer::DomAnalyzer() {}
+DomAnalyzer::DomAnalyzer() : frontier_generated(false) {}
 
-void DomAnalyzer::solve(const vector<vector<int>>& graph, const vector<int>& entry_points, bool reverse)
+void DomAnalyzer::solve(
+    const vector<vector<int>>& graph, const vector<int>& entry_points, bool reverse, bool gen_frontier)
 {
+    frontier_generated = gen_frontier;
+
     int node_count = graph.size();
 
     int                 virtual_source = node_count;
@@ -112,15 +115,18 @@ void DomAnalyzer::build(const vector<vector<int>>& working_graph, int node_count
     for (int i = 0; i < node_count; ++i)
         if (block_to_dfs[i]) dom_tree[imm_dom[i]].push_back(i);
 
-    for (int block = 0; block < node_count; ++block)
+    if (frontier_generated)
     {
-        for (int succ : working_graph[block])
+        for (int block = 0; block < node_count; ++block)
         {
-            int runner = block;
-            while (runner != imm_dom[succ] && runner != virtual_source)
+            for (int succ : working_graph[block])
             {
-                dom_frontier[runner].insert(succ);
-                runner = imm_dom[runner];
+                int runner = block;
+                while (runner != imm_dom[succ] && runner != virtual_source)
+                {
+                    dom_frontier[runner].insert(succ);
+                    runner = imm_dom[runner];
+                }
             }
         }
     }

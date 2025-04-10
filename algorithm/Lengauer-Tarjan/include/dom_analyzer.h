@@ -14,12 +14,13 @@ namespace Cele
             std::vector<std::vector<int>> dom_tree;
             std::vector<std::set<int>>    dom_frontier;
             std::vector<int>              imm_dom;
+            bool                          frontier_generated;
 
           public:
             DomAnalyzer();
 
           public:
-            void solve(const std::vector<std::vector<int>>& graph, const std::vector<int>& entry_points, bool reverse = false);
+            void solve(const std::vector<std::vector<int>>& graph, const std::vector<int>& entry_points, bool reverse = false, bool gen_frontier = false);
             void clear();
 
           private:
