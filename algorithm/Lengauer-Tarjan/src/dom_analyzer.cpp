@@ -8,16 +8,34 @@ using namespace Cele::Algo;
 
 DomAnalyzer::DomAnalyzer() {}
 
-void DomAnalyzer::solve(const vector<vector<int>>& graph, const vector<int>& entry_points)
+void DomAnalyzer::solve(const vector<vector<int>>& graph, const vector<int>& entry_points, bool reverse)
 {
     int node_count = graph.size();
 
     int                 virtual_source = node_count;
-    vector<vector<int>> working_graph  = graph;
-    working_graph.push_back(vector<int>());
-    for (int entry : entry_points) working_graph[virtual_source].push_back(entry);
-    ++node_count;
+    vector<vector<int>> working_graph;
 
+    if (!reverse)
+    {
+        working_graph = graph;
+        working_graph.push_back(vector<int>());
+        for (int entry : entry_points) working_graph[virtual_source].push_back(entry);
+    }
+    else
+    {
+        working_graph.resize(node_count + 1);
+        for (int u = 0; u < node_count; ++u)
+            for (int v : graph[u]) working_graph[v].push_back(u);
+
+        working_graph.push_back(vector<int>());
+        for (int exit : entry_points) working_graph[virtual_source].push_back(exit);
+    }
+
+    build(working_graph, node_count + 1, virtual_source);
+}
+
+void DomAnalyzer::build(const vector<vector<int>>& working_graph, int node_count, int virtual_source)
+{
     vector<vector<int>> backward_edges(node_count);
     for (int u = 0; u < node_count; ++u)
         for (int v : working_graph[u]) backward_edges[v].push_back(u);

@@ -19,10 +19,11 @@ namespace Cele
             DomAnalyzer();
 
           public:
-            void solve(const std::vector<std::vector<int>>& graph, const std::vector<int>& entry_points);
+            void solve(const std::vector<std::vector<int>>& graph, const std::vector<int>& entry_points, bool reverse = false);
             void clear();
 
           private:
+            void build(const std::vector<std::vector<int>>& working_graph, int node_count, int virtual_source);
             void removeVirtualSource(int virtual_source);
         };
 
