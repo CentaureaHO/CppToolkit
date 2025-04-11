@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_BITSET_H
-#define DYNAMIC_BITSET_H
+#ifndef __DYNAMIC_BITSET_H__
+#define __DYNAMIC_BITSET_H__
 
 #include <climits>
 #include <string>
@@ -76,7 +76,7 @@ namespace Cele
 
         inline void check_bounds(size_t pos) const
         {
-            if (pos >= m_num_bits) { throw std::out_of_range("Position out of range"); }
+            if (pos >= m_num_bits) throw std::out_of_range("Position out of range");
         }
 
         void          sanitize();
@@ -88,4 +88,5 @@ namespace Cele
     dynamic_bitset operator^(const dynamic_bitset& lhs, const dynamic_bitset& rhs);
     std::ostream&  operator<<(std::ostream& os, const dynamic_bitset& bs);
 }  // namespace Cele
-#endif
+
+#endif  // __DYNAMIC_BITSET_H__
