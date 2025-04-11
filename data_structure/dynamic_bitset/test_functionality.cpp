@@ -1,11 +1,11 @@
+#include <dynamic_bitset.h>
+
 #include <iostream>
 #include <random>
 #include <string>
 #include <cassert>
 #include <functional>
 #include <bitset>
-
-#include "include/dynamic_bitset.h"
 
 #ifdef DIFF_TEST
 #    include <boost/dynamic_bitset.hpp>

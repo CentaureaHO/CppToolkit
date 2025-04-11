@@ -1,4 +1,4 @@
-#include "../include/dynamic_bitset.h"
+#include <dynamic_bitset.h>
 #include <algorithm>
 #include <cstring>
 #include <cmath>

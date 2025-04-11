@@ -1,3 +1,5 @@
+#include <dynamic_bitset.h>
+
 #include <iostream>
 #include <chrono>
 #include <vector>
@@ -6,8 +8,6 @@
 #include <iomanip>
 #include <functional>
 #include <sstream>
-
-#include "include/dynamic_bitset.h"
 
 #ifdef DIFF_TEST
 #    include <boost/dynamic_bitset.hpp>
