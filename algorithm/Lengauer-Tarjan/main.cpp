@@ -24,7 +24,7 @@ vector<int> countDominated(const vector<vector<int>>& dominatorTree, const vecto
     for (int entry : entries)
         if (entry < node_count) dfs_count(entry);
 
-    return std::move(count);
+    return count;
 }
 
 int main()
@@ -47,7 +47,7 @@ int main()
 
     vector<int> dominated_counts = countDominated(analyzer.dom_tree, entries);
 
-    for (int i = 1; i <= n; ++i) { cout << dominated_counts[i] << ' '; }
+    for (int i = 1; i <= n; ++i) cout << dominated_counts[i] << ' ';
     cout << '\n';
 
     return 0;
