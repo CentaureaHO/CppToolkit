@@ -44,22 +44,27 @@ namespace Cele::LC
     inline const Natural ZERO = Natural(
         [](const ZeroBranch& on_zero) { return [on_zero](const SuccBranch&) -> void* { return on_zero(nullptr); }; });
 
-    inline const auto SUCC = [](const Natural& n_pred) -> Natural {
-        return Natural([n_pred](const ZeroBranch&) {
-            return [n_pred](const SuccBranch& on_succ) -> void* { return on_succ(n_pred); };
+    inline const auto SUCC = [](const Natural& n_pred_arg) -> Natural {
+        // Capture n_pred_arg by value to avoid dangling reference if n_pred_arg is temporary.
+        return Natural([n_pred_captured_val = n_pred_arg](const ZeroBranch&) {
+            // The inner lambda also captures n_pred_captured_val by value (copy).
+            return [n_pred_captured_val](const SuccBranch& on_succ) -> void* {
+                return on_succ(n_pred_captured_val);
+            };
         });
     };
 
-    inline const auto PRED = [](const Natural& n) -> Natural {
-        return Natural([n](const ZeroBranch& z_outer) {
-            return [n, z_outer](const SuccBranch& s_outer) -> void* {
-                auto n_on_zero = [z_outer, s_outer](void*) -> void* {
+    inline const auto PRED = [](const Natural& n_orig) -> Natural {
+        // Capture n_orig by value.
+        return Natural([n_val_captured = n_orig](const ZeroBranch& z_outer) {
+            return [n_val_captured, z_outer](const SuccBranch& s_outer) -> void* {
+                auto n_on_zero = [z_outer, s_outer /*, &n_val_captured -- not needed here explicitly*/ ](void*) -> void* {
                     return ZERO(z_outer)(s_outer);
                 };
-                auto n_on_succ = [z_outer, s_outer](const Natural& pred_n) -> void* {
-                    return pred_n(z_outer)(s_outer);
+                auto n_on_succ = [z_outer, s_outer /*, &n_val_captured -- not needed here explicitly*/ ](const Natural& pred_of_n_val_captured) -> void* {
+                    return pred_of_n_val_captured(z_outer)(s_outer);
                 };
-                return n(n_on_zero)(n_on_succ);
+                return n_val_captured(n_on_zero)(n_on_succ);
             };
         });
     };
