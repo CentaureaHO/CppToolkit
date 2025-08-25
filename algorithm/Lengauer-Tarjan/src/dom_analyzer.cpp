@@ -34,10 +34,11 @@ void DomAnalyzer::solve(
         for (int exit : entry_points) working_graph[virtual_source].push_back(exit);
     }
 
-    build(working_graph, node_count + 1, virtual_source);
+    build(working_graph, node_count + 1, virtual_source, entry_points);
 }
 
-void DomAnalyzer::build(const vector<vector<int>>& working_graph, int node_count, int virtual_source)
+void DomAnalyzer::build(
+    const vector<vector<int>>& working_graph, int node_count, int virtual_source, const std::vector<int>& entry_points)
 {
     vector<vector<int>> backward_edges(node_count);
     for (int u = 0; u < node_count; ++u)
@@ -115,6 +116,10 @@ void DomAnalyzer::build(const vector<vector<int>>& working_graph, int node_count
     for (int i = 0; i < node_count; ++i)
         if (block_to_dfs[i]) dom_tree[imm_dom[i]].push_back(i);
 
+    removeVirtualSource(virtual_source);
+    --node_count;
+    for (int entry : entry_points) imm_dom[entry] = -1;
+
     if (frontier_generated)
     {
         for (int block = 0; block < node_count; ++block)
@@ -125,19 +130,18 @@ void DomAnalyzer::build(const vector<vector<int>>& working_graph, int node_count
                 while (runner != imm_dom[succ] && runner != virtual_source)
                 {
                     dom_frontier[runner].insert(succ);
+                    // if (imm_dom[runner] == runner) assert(false);
+
                     runner = imm_dom[runner];
+                    if (runner == -1) break;
                 }
             }
         }
     }
-
-    removeVirtualSource(virtual_source);
 }
 
 void DomAnalyzer::removeVirtualSource(int virtual_source)
 {
-    for (int child : dom_tree[virtual_source]) imm_dom[child] = -1;
-
     dom_tree.resize(virtual_source);
     dom_frontier.resize(virtual_source);
     imm_dom.resize(virtual_source);
